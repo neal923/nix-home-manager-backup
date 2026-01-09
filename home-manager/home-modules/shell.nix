@@ -35,7 +35,7 @@
       # Ctrl x / e 编辑缓存区
       autoload -Uz edit-command-line
       zle -N edit-command-line
-      bindkey '^x^e' edit-command-line
+      bindkey '^Xe' edit-command-line
       
       # !* !?
       bindkey ' ' magic-space
