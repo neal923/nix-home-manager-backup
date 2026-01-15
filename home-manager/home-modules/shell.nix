@@ -39,8 +39,6 @@
       
       # !* !?
       bindkey ' ' magic-space
-      bindkey | rg magic-space
-      " " magic-space
 
       # Suffix Aliases
       alias -s md="bat"
@@ -66,6 +64,9 @@
       # 连续 Tab 显示列表
       setopt AUTO_LIST
       setopt AUTO_MENU
+      setopt HIST_IGNORE_ALL_DUPS
+      setopt HIST_REDUCE_BLANKS
+      setopt HIST_VERIFY
     '';
     history = {
       size = 100000;
