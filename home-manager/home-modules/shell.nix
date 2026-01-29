@@ -105,7 +105,9 @@
 
   programs.tmux = {
     enable = true;
-    terminal = "xterm-256color";
+    # Clear temp file;
+    # rm -rf /tmp/tmux-$(id -u)
+    terminal = "screen-256color";
     keyMode = "vi";
 
     extraConfig = ''
