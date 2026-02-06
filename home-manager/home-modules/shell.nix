@@ -117,7 +117,11 @@
 
       set -g mouse on
       setw -g mode-keys vi
-
+      # bing copy and paste
+      bind-key -T copy-mode-vi v send-keys -X begin-selection
+      ## Only for macOs
+      bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel "pbcopy"
+      bind-key -T copy-mode-vi Y send -X copy-line-and-cancel "pbcopy"
       # pane move
       bind h select-pane -L
       bind j select-pane -D
