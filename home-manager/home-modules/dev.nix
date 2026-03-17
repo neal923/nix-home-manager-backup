@@ -10,6 +10,7 @@
     cargo
     rustfmt
     clippy
+    bun
 
     # Java（需要再开）
     # jdk21
