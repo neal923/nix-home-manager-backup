@@ -12,4 +12,3 @@
     ./home-modules/macos.nix
   ];
 }
-

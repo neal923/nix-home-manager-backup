@@ -20,6 +20,11 @@
     # Ctrl-u	删到行首
     # Ctrl-k	删到行尾
     initContent = ''
+      # 恢复 nix 多用户环境的 PATH（macOS 升级会清掉 /etc/zshrc 里的 nix 片段）
+      if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      fi
+
       # 使用 Emacs 风格（Ctrl-n / Ctrl-p）
       bindkey -e
       bindkey '^W' backward-kill-word
