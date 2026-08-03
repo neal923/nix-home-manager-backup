@@ -25,6 +25,8 @@
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
       fi
 
+      alias t='tmux new -As main'
+
       # 使用 Emacs 风格（Ctrl-n / Ctrl-p）
       bindkey -e
       bindkey '^W' backward-kill-word
@@ -116,22 +118,35 @@
     keyMode = "vi";
 
     extraConfig = ''
+      set -g default-shell ${pkgs.zsh}/bin/zsh
+      set -g default-command "${pkgs.zsh}/bin/zsh -l"
       unbind C-b
       set -g prefix C-a
       bind C-a send-prefix
 
       set -g mouse on
       setw -g mode-keys vi
+
       # bing copy and paste
       bind-key -T copy-mode-vi v send-keys -X begin-selection
+
       ## Only for macOs
       bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel "pbcopy"
       bind-key -T copy-mode-vi Y send -X copy-line-and-cancel "pbcopy"
+
       # pane move
       bind h select-pane -L
       bind j select-pane -D
       bind k select-pane -U
       bind l select-pane -R
+      
+      bind | split-window -h
+      bind - split-window -v
+
+      bind -r H resize-pane -L 5
+      bind -r J resize-pane -D 5
+      bind -r K resize-pane -U 5
+      bind -r L resize-pane -R 5
     '';
   };
 }

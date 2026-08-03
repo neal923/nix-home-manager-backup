@@ -11,6 +11,7 @@
     rustfmt
     clippy
     bun
+    postgresql_18
 
     # Java（需要再开）
     # jdk21
