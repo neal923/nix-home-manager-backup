@@ -1,6 +1,9 @@
 { pkgs, ...}:
 
 {
+  # 源配置位于仓库根的 nvim/，由 Home Manager 部署到 ~/.config/nvim
+  xdg.configFile."nvim".source = ../../nvim;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
