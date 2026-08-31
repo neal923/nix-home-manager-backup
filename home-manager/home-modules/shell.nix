@@ -74,6 +74,10 @@
       setopt HIST_IGNORE_ALL_DUPS
       setopt HIST_REDUCE_BLANKS
       setopt HIST_VERIFY
+
+      # 本机专属且不想进 git 的东西（token、公司内网地址等）放这里。
+      # 文件在仓库外，不存在时静默跳过。放在最后所以可以覆盖上面的设置。
+      [ -f ~/.config/zsh/local.zsh ] && source ~/.config/zsh/local.zsh
     '';
     history = {
       size = 100000;
