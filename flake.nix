@@ -29,6 +29,10 @@
           system = "aarch64-darwin";
           hostModule = ./home-manager/hosts/neals-macbook-pro.nix;
         };
+        "Neals-Mac-mini" = mkHome {
+          system = "aarch64-darwin";
+          hostModule = ./home-manager/hosts/neals-mac-mini.nix;
+        };
       };
     in
     {
