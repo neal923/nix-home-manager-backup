@@ -6,16 +6,16 @@ macOS (Apple Silicon) 上的 Nix + Home Manager 配置，包含 Neovim 配置。
 
 ```
 ~/dotfiles/
-├── flake.nix               # Flake 入口，定义 homeConfigurations."nealwang"
+├── flake.nix               # Flake 入口，按主机名定义 homeConfigurations
 ├── flake.lock              # 锁定 nixpkgs / home-manager 版本，保证多机一致
 ├── home-manager/
 │   ├── home.nix            # 公共配置，只负责 import 各模块
 │   ├── starship.toml       # 被 home-modules/shell.nix 读取
 │   ├── hosts/              # 每台机器独有的差异
-│   │   ├── neals-macbook-pro.nix   # A 机：privoxy 代理
+│   │   ├── neals-macbook-pro.nix   # A 机：用户名、家目录、privoxy 代理
 │   │   └── example.nix             # 新机器模板
 │   └── home-modules/       # 公共模块，所有机器共用
-│       ├── core.nix        # username / homeDirectory / stateVersion
+│       ├── core.nix        # stateVersion（username 不写在这里）
 │       ├── env.nix         # 环境变量
 │       ├── packages.nix    # 常用软件包
 │       ├── dev.nix         # 开发工具链
@@ -76,12 +76,15 @@ home-manager switch --flake ~/dotfiles#Neals-MacBook-Pro -b backup
 **第一层：进 git 的机器差异 → `home-manager/hosts/<主机名>.nix`**
 
 `flake.nix` 里每台机器一个 `homeConfigurations` 条目，各自 import 公共的 `home.nix` 加自己的 host 模块。
-适合代理端口、本机专属软件包、macOS 专属设置这类「不是秘密、但每台机器不一样」的东西。
-进了 git 才能真正复现，这是推荐的主要手段。
+适合用户名、家目录、代理端口、本机专属软件包这类「不是秘密、但每台机器不一样」的东西。
+进了 git 才能真正复现。两台机器共用**同一份仓库内容**：差异是多一个 `hosts/<主机名>.nix`，不是去改公共模块。
 
-典型例子就是代理：A 机跑着 privoxy，所以 `hosts/neals-macbook-pro.nix` 里设了 `http_proxy`；
-`home-modules/env.nix` 默认**不设**代理，没跑代理的机器不会继承一个死代理地址。
-（继承死代理很难查：`curl`、`git`、`nix` 会全部超时，报错还看不出是代理问题。）
+典型例子：
+
+- 用户名：写在各自的 host 文件里，**不要**改 `home-modules/core.nix`。改公共模块会逼两台机器的 git 内容分叉。
+- 代理：A 机跑着 privoxy，所以 `hosts/neals-macbook-pro.nix` 里设了 `http_proxy`；
+  `home-modules/env.nix` 默认**不设**代理，没跑代理的机器不会继承一个死代理地址。
+  （继承死代理很难查：`curl`、`git`、`nix` 会全部超时，报错还看不出是代理问题。）
 
 **第二层：不进 git 的本机配置 → `~/.config/zsh/local.zsh`**
 
@@ -166,11 +169,11 @@ nix run home-manager/master -- switch --flake ~/dotfiles#<主机名> -b backup
 
 之后本机就有 `home-manager` 命令了，直接用上面「日常使用」里的写法。
 
-需要调整的地方：
+需要调整的地方都写在**本机自己的 host 文件和 flake.nix 那一条**里，不要改公共模块：
 
-- 非 Apple Silicon 机器要改 `flake.nix` 里该机器条目的 `system`（如 `x86_64-darwin`）
-- 用户名不同要改 `home-manager/home-modules/core.nix` 的 `home.username` / `home.homeDirectory`；
-  如果两台机器用户名不同，把这两项也挪到各自的 `hosts/<主机名>.nix` 里
+- `home.username` / `home.homeDirectory`：填进 `hosts/<主机名>.nix`
+- 非 Apple Silicon：该机器在 `flake.nix` 里的 `system` 写成 `x86_64-darwin`
+- 代理、本机专属包：同样只写 host 文件
 
 ## 故障排查
 
