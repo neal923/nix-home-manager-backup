@@ -11,6 +11,8 @@
 # 新机器是「多一份 host 文件」，不是去改 core.nix。
 { ... }:
 {
+  # username = `whoami` 的输出，不是家目录最后一段。
+  # 两者可以不同，例如 whoami=nealwang 但 HOME=/Users/neal。
   home.username = "CHANGE_ME";
   home.homeDirectory = "/Users/CHANGE_ME";
 

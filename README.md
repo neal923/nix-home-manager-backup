@@ -171,7 +171,8 @@ nix run home-manager/master -- switch --flake ~/dotfiles#<主机名> -b backup
 
 需要调整的地方都写在**本机自己的 host 文件和 flake.nix 那一条**里，不要改公共模块：
 
-- `home.username` / `home.homeDirectory`：填进 `hosts/<主机名>.nix`
+- `home.username`：填 `whoami` 的输出，**不是**家目录最后一段。本机就是 `nealwang`，家目录却是 `/Users/neal`
+- `home.homeDirectory`：填 `$HOME`（`echo $HOME`）
 - 非 Apple Silicon：该机器在 `flake.nix` 里的 `system` 写成 `x86_64-darwin`
 - 代理、本机专属包：同样只写 host 文件
 
