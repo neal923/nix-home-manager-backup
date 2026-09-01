@@ -8,5 +8,9 @@
   home.username = "nealwang";
   home.homeDirectory = "/Users/nealwang";
 
-  # 本机没有 privoxy。env.nix 默认不设 http_proxy，这里也不开代理。
+  # 本机跑着 privoxy，监听 8118。
+  home.sessionVariables = {
+    http_proxy  = "http://127.0.0.1:8118";
+    https_proxy = "http://127.0.0.1:8118";
+  };
 }
